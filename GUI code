@@ -1,0 +1,83 @@
+import tkinter as tk
+from tkinter import ttk
+
+# Function to display recipe
+def show_recipe(recipe_name, ingredients, instructions):
+    recipe_text.config(state=tk.NORMAL)
+    recipe_text.delete('1.0', tk.END)
+    recipe_text.insert(tk.END, f"{recipe_name} Recipe:\n\n")
+    recipe_text.insert(tk.END, "Ingredients:\n")
+    for ingredient in ingredients:
+        recipe_text.insert(tk.END, f"- {ingredient}\n")
+    recipe_text.insert(tk.END, "\nInstructions:\n")
+    for step in instructions:
+        recipe_text.insert(tk.END, f"{step}\n")
+    recipe_text.config(state=tk.DISABLED)
+
+# Create the main window
+root = tk.Tk()
+root.title("Filipino Recipes")
+
+# Set background color to rainbow (red, orange, yellow, green, blue, indigo, violet)
+root.configure(background='#ff0000')  # Red
+
+# Create a frame to hold widgets
+frame = ttk.Frame(root, padding="20")
+frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+# Define recipes
+recipes = {
+    "Adobo": {
+        "ingredients": [
+            "1 kg chicken or pork, cut into serving pieces",
+            "1/2 cup soy sauce",
+            "1/2 cup vinegar",
+            "4 cloves garlic, minced",
+            "1 onion, chopped",
+            "1 tsp peppercorns",
+            "2 bay leaves",
+            "1 cup water"
+        ],
+        "instructions": [
+            "1. In a pot, combine all ingredients.",
+            "2. Bring to a boil, then simmer until meat is tender.",
+            "3. Serve hot with rice."
+        ]
+    },
+    "Sinigang": {
+        "ingredients": [
+            "500g pork belly or beef ribs",
+            "1 pack sinigang mix (tamarind soup base)",
+            "2 tomatoes, quartered",
+            "1 onion, quartered",
+            "2 cups water",
+            "2 cups kangkong (water spinach)",
+            "1 cup radish, sliced",
+            "1 cup string beans, cut into 2-inch pieces",
+            "Salt and pepper to taste"
+        ],
+        "instructions": [
+            "1. In a pot, boil pork or beef until tender.",
+            "2. Add tomatoes, onion, and sinigang mix. Simmer for 10 minutes.",
+            "3. Add radish and string beans. Simmer until vegetables are cooked.",
+            "4. Add kangkong and season with salt and pepper.",
+            "5. Serve hot with rice."
+        ]
+    }
+}
+
+# Create buttons for each recipe
+buttons = []
+for idx, recipe_name in enumerate(recipes.keys()):
+    button = ttk.Button(frame, text=recipe_name, command=lambda name=recipe_name: show_recipe(name, recipes[name]["ingredients"], recipes[name]["instructions"]))
+    button.grid(row=0, column=idx, padx=10, pady=10)
+    buttons.append(button)
+
+# Create a text widget to display the recipe
+recipe_text = tk.Text(frame, width=60, height=20, wrap=tk.WORD)
+recipe_text.grid(row=1, column=0, columnspan=len(buttons))
+
+# Disable text widget so it's not editable
+recipe_text.config(state=tk.DISABLED)
+
+root.mainloop()
